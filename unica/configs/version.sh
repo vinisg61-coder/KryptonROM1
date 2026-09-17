@@ -2,11 +2,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Only the below variable(s) need to be changed!
-VERSION_MAJOR=1
-VERSION_MINOR=0
+VERSION_MAJOR=3
+VERSION_MINOR=2
 VERSION_PATCH=0
-# shellcheck disable=SC2034
-ROM_NAME="krypton"
 
 # The below variables will be generated automatically
 #

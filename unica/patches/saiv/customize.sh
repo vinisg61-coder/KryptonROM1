@@ -49,6 +49,9 @@ if [[ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_GALLERY_CONFIG_IMAGE_
             DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/aig_classifier"
         fi
         ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "saiv/image_understanding/db/aig_classifier" 0 2000 755 "u:object_r:vendor_snap_file:s0"
+        if [ -d "$WORK_DIR/vendor/saiv/image_understanding/db/aig_detector" ]; then
+            DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/aig_detector"
+        fi
         if [ -d "$WORK_DIR/vendor/saiv/image_understanding/db/aig_document_classifier" ]; then
             DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/aig_document_classifier"
         fi
@@ -57,6 +60,9 @@ if [[ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_GALLERY_CONFIG_IMAGE_
             DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/aig_document_detector"
         fi
         ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "saiv/image_understanding/db/aig_document_detector" 0 2000 755 "u:object_r:vendor_snap_file:s0"
+        if [ -d "$WORK_DIR/vendor/saiv/image_understanding/db/srr_interaction" ]; then
+            DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/srr_interaction"
+        fi
     fi
 fi
 
@@ -104,17 +110,19 @@ if [[ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_GALLERY_CONFIG_PET_CL
 fi
 
 # SEC_PRODUCT_FEATURE_VISION_CONFIG_BIXBYVISION_VERSION
-# NOTE: SLens files from gts11xx prebuilt are not available in our repo.
-# Since this is Galaxy AI feature and user wants to remove AI, skip adding these.
 if [ -f "$WORK_DIR/system/system/priv-app/BixbyVisionFramework3.5/BixbyVisionFramework3.5.apk" ]; then
     if [ ! -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_classifier" ] || \
             [ "$TARGET_PLATFORM_SDK_VERSION" -lt "$SOURCE_PLATFORM_SDK_VERSION" ]; then
         if [ -d "$WORK_DIR/system/system/saiv/image_understanding/db/slens_classifier" ]; then
             DELETE_FROM_WORK_DIR "system" "system/saiv/image_understanding/db/slens_classifier"
         fi
-        # SLens classifier not available - skipping (gts11xx prebuilt not in repo)
+        ADD_TO_WORK_DIR "gts11xx" "system" "system/saiv/image_understanding/db/slens_classifier/slens_classifier_cnn.sni" 0 0 644 "u:object_r:system_file:s0"
         if [ -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_classifier" ]; then
             DELETE_FROM_WORK_DIR "vendor" "etc/saiv/image_understanding/db/slens_classifier"
+        fi
+        ADD_TO_WORK_DIR "gts11xx" "vendor" "etc/saiv/image_understanding/db/slens_classifier/slens_classifier_cnn.tflite" 0 0 644 "u:object_r:vendor_configs_file:s0"
+        if [ -d "$WORK_DIR/vendor/saiv/image_understanding/db/slens_classifier" ]; then
+            DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/slens_classifier"
         fi
     fi
     if [ ! -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_detector" ] || \
@@ -122,9 +130,13 @@ if [ -f "$WORK_DIR/system/system/priv-app/BixbyVisionFramework3.5/BixbyVisionFra
         if [ -d "$WORK_DIR/system/system/saiv/image_understanding/db/slens_detector" ]; then
             DELETE_FROM_WORK_DIR "system" "system/saiv/image_understanding/db/slens_detector"
         fi
-        # SLens detector not available - skipping (gts11xx prebuilt not in repo)
+        ADD_TO_WORK_DIR "gts11xx" "system" "system/saiv/image_understanding/db/slens_detector/slens_detector_cnn.sni" 0 0 644 "u:object_r:system_file:s0"
         if [ -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_detector" ]; then
             DELETE_FROM_WORK_DIR "vendor" "etc/saiv/image_understanding/db/slens_detector"
+        fi
+        ADD_TO_WORK_DIR "gts11xx" "vendor" "etc/saiv/image_understanding/db/slens_detector/slens_detector_cnn.tflite" 0 0 644 "u:object_r:vendor_configs_file:s0"
+        if [ -d "$WORK_DIR/vendor/saiv/image_understanding/db/slens_detector" ]; then
+            DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/slens_detector"
         fi
     fi
 else
@@ -139,6 +151,12 @@ else
     fi
     if [ -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_detector" ]; then
         DELETE_FROM_WORK_DIR "vendor" "etc/saiv/image_understanding/db/slens_detector"
+    fi
+    if [ -d "$WORK_DIR/vendor/saiv/image_understanding/db/slens_classifier" ]; then
+        DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/slens_classifier"
+    fi
+    if [ -d "$WORK_DIR/vendor/saiv/image_understanding/db/slens_detector" ]; then
+        DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/slens_detector"
     fi
 fi
 
@@ -188,21 +206,14 @@ fi
 ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "system" "system/saiv/textrecognition" 0 0 755 "u:object_r:system_file:s0"
 
 # SEC_PRODUCT_FEATURE_CAMERA_CONFIG_VENDOR_LIB_INFO:=*smart_scan.samsung.v2*
-# NOTE: SS_segmenter from a34xxx not available, using SOURCE_FIRMWARE
 if [ -f "$WORK_DIR/system/system/lib64/libSmartScan.camera.samsung.so" ]; then
     if [ ! -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/SS_segmenter" ] || \
             [ "$TARGET_PLATFORM_SDK_VERSION" -lt "$SOURCE_PLATFORM_SDK_VERSION" ]; then
         if [ -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/SS_segmenter" ]; then
             DELETE_FROM_WORK_DIR "vendor" "etc/saiv/image_understanding/db/SS_segmenter"
         fi
-        # Try SOURCE_FIRMWARE first, fallback to TARGET_FIRMWARE
-        if [ -f "$FW_DIR/$SOURCE_FIRMWARE/vendor/etc/saiv/image_understanding/db/SS_segmenter/SS_segmenter_cnn.tflite" ]; then
-            ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "etc/saiv/image_understanding/db/SS_segmenter/SS_segmenter_cnn.tflite" 0 0 644 "u:object_r:vendor_configs_file:s0"
-            ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "vendor" "etc/saiv/image_understanding/db/SS_segmenter/SS_segmenter_cnn.info" 0 0 644 "u:object_r:vendor_configs_file:s0"
-        elif [ -f "$FW_DIR/$TARGET_FIRMWARE/vendor/etc/saiv/image_understanding/db/SS_segmenter/SS_segmenter_cnn.tflite" ]; then
-            ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "vendor" "etc/saiv/image_understanding/db/SS_segmenter/SS_segmenter_cnn.tflite" 0 0 644 "u:object_r:vendor_configs_file:s0"
-            ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "vendor" "etc/saiv/image_understanding/db/SS_segmenter/SS_segmenter_cnn.info" 0 0 644 "u:object_r:vendor_configs_file:s0"
-        fi
+        ADD_TO_WORK_DIR "a34xxx" "vendor" "etc/saiv/image_understanding/db/SS_segmenter/SS_segmenter_cnn.tflite" 0 0 644 "u:object_r:vendor_configs_file:s0"
+        ADD_TO_WORK_DIR "a34xxx" "vendor" "etc/saiv/image_understanding/db/SS_segmenter/SS_segmenter_cnn.info" 0 0 644 "u:object_r:vendor_configs_file:s0"
     fi
 fi
 
