@@ -111,8 +111,9 @@ fi
 
 # SEC_PRODUCT_FEATURE_VISION_CONFIG_BIXBYVISION_VERSION
 if [ -f "$WORK_DIR/system/system/priv-app/BixbyVisionFramework3.5/BixbyVisionFramework3.5.apk" ]; then
-    if [ ! -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_classifier" ] || \
-            [ "$TARGET_PLATFORM_SDK_VERSION" -lt "$SOURCE_PLATFORM_SDK_VERSION" ]; then
+    if [ -d "$SRC_DIR/prebuilts/samsung/gts11xx" ] && \
+            { [ ! -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_classifier" ] || \
+            [ "$TARGET_PLATFORM_SDK_VERSION" -lt "$SOURCE_PLATFORM_SDK_VERSION" ]; }; then
         if [ -d "$WORK_DIR/system/system/saiv/image_understanding/db/slens_classifier" ]; then
             DELETE_FROM_WORK_DIR "system" "system/saiv/image_understanding/db/slens_classifier"
         fi
@@ -125,8 +126,9 @@ if [ -f "$WORK_DIR/system/system/priv-app/BixbyVisionFramework3.5/BixbyVisionFra
             DELETE_FROM_WORK_DIR "vendor" "saiv/image_understanding/db/slens_classifier"
         fi
     fi
-    if [ ! -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_detector" ] || \
-            [ "$TARGET_PLATFORM_SDK_VERSION" -lt "$SOURCE_PLATFORM_SDK_VERSION" ]; then
+    if [ -d "$SRC_DIR/prebuilts/samsung/gts11xx" ] && \
+            { [ ! -d "$WORK_DIR/vendor/etc/saiv/image_understanding/db/slens_detector" ] || \
+            [ "$TARGET_PLATFORM_SDK_VERSION" -lt "$SOURCE_PLATFORM_SDK_VERSION" ]; }; then
         if [ -d "$WORK_DIR/system/system/saiv/image_understanding/db/slens_detector" ]; then
             DELETE_FROM_WORK_DIR "system" "system/saiv/image_understanding/db/slens_detector"
         fi
