@@ -998,7 +998,7 @@ fi
 
 # SEC_PRODUCT_FEATURE_WLAN_SUPPORT_MOBILEAP_DUALAP
 if ! $SOURCE_WLAN_SUPPORT_MOBILEAP_DUALAP; then
-    if $TARGET_WLAN_SUPPORT_MOBILEAP_DUALAP; then
+    if $TARGET_WLAN_SUPPORT_MOBILEAP_DUALAP && [ -d "$SRC_DIR/prebuilts/samsung/dm1qxxx" ]; then
         ADD_TO_WORK_DIR "dm1qxxx" "product" "overlay/SoftapOverlayDualAp/SoftapOverlayDualAp.apk" 0 0 644 "u:object_r:system_file:s0"
 
         APPLY_PATCH "system" "system/framework/semwifi-service.jar" \
@@ -1032,7 +1032,7 @@ fi
 
 # SEC_PRODUCT_FEATURE_WLAN_SUPPORT_MOBILEAP_OWE
 if ! $SOURCE_WLAN_SUPPORT_MOBILEAP_OWE; then
-    if $TARGET_WLAN_SUPPORT_MOBILEAP_OWE; then
+    if $TARGET_WLAN_SUPPORT_MOBILEAP_OWE && [ -d "$SRC_DIR/prebuilts/samsung/dm1qxxx" ]; then
         ADD_TO_WORK_DIR "dm1qxxx" "product" "overlay/SoftapOverlayOWE/SoftapOverlayOWE.apk" 0 0 644 "u:object_r:system_file:s0"
 
         APPLY_PATCH "system" "system/framework/semwifi-service.jar" \
