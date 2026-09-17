@@ -97,7 +97,7 @@ jobs:
         uses: actions/setup-java@v6
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '17.0.13'
           cache: 'gradle'
 
       - name: Generate build config
